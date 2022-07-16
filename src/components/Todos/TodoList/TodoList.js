@@ -1,8 +1,24 @@
 import './TodoList.css';
-import { connect } from 'react-redux';
-import todos from './../../redux/todos/todos-actions';
+import { useSelector, useDispatch } from 'react-redux';
+import todosAtions from './../../redux/todos/todos-actions';
 
-function TodoList({ todos, onDeleteTodo, onToggleCompleted }) {
+const getVisibleTodos = (allTodos, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allTodos.filter(todo =>
+    todo.text.toLowerCase().includes(normalizedFilter)
+  );
+};
+
+function TodoList() {
+  const todos = useSelector(state =>
+    getVisibleTodos(state.todos.items, state.todos.filter)
+  );
+  const dispatch = useDispatch();
+
+  const onDeleteTodo = id => dispatch(todosAtions.addDelete(id));
+  const onToggleCompleted = id => dispatch(todosAtions.toggleCompleted(id));
+
   return (
     <div className="TodoList">
       {/* <h2>Практика с классами</h2> */}
@@ -14,13 +30,17 @@ function TodoList({ todos, onDeleteTodo, onToggleCompleted }) {
                 type="checkbox"
                 className="TodoList__checkbox"
                 checked={completed}
-                onChange={() => onToggleCompleted(id)}
+                onChange={() => {
+                  onToggleCompleted(id);
+                }}
               ></input>
               <p className="TodoList__title">{text}</p>
               <button
                 type="button"
                 className="TodoList__button"
-                onClick={() => onDeleteTodo(id)}
+                onClick={() => {
+                  onDeleteTodo(id);
+                }}
               >
                 Удалить
               </button>
@@ -32,25 +52,24 @@ function TodoList({ todos, onDeleteTodo, onToggleCompleted }) {
   );
 }
 
+// const getVisibleTodos = (allTodos, filter) => {
+//   const normalizedFilter = filter.toLowerCase();
 
-const getVisibleTodos = (allTodos, filter) => {
-  const normalizedFilter = filter.toLowerCase();
+//   return allTodos.filter(todo =>
+//     todo.text.toLocaleLowerCase().includes(normalizedFilter)
+//   );
+// };
 
-  return allTodos.filter(todo =>
-    todo.text.toLocaleLowerCase().includes(normalizedFilter)
-  );
-};
+// const mapStateToProps = state => {
+//   const { filter, items } = state.todos;
 
-const mapStateToProps = state => {
-  const { filter, items } = state.todos;
+//   const visibleTodos = getVisibleTodos(items, filter);
+//   return { todos: visibleTodos };
+// };
 
-  const visibleTodos = getVisibleTodos(items, filter);
-  return { todos: visibleTodos };
-};
+// const mapDispatchToProps = dispatch => ({
+//   onDeleteTodo: id => dispatch(todos.addDelete(id)),
+//   onToggleCompleted: id => dispatch(todos.toggleCompleted(id)),
+// });
 
-const mapDispatchToProps = dispatch => ({
-  onDeleteTodo: id => dispatch(todos.addDelete(id)),
-  onToggleCompleted: id => dispatch(todos.toggleCompleted(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+export default TodoList;

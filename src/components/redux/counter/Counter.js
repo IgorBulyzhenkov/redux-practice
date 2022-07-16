@@ -1,19 +1,22 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import * as action from './counter-actions';
 
-const { increment, decrement } = action;
+function Counter() {
+  const value = useSelector(state => state.counter.value);
+  const step = useSelector(state => state.counter.step);
 
-function Counter({ value, step, onIncrement, onDecrement }) {
+  const dispatch = useDispatch();
+
   return (
     <div className="Counter">
       <span className="Counter__value">{value}</span>
 
       <div className="Counter__controls">
-        <button type="button" onClick={() => onIncrement(step)}>
+        <button type="button" onClick={() => dispatch(action.increment(step))}>
           Увеличить на {step}
         </button>
-        <button type="button" onClick={() => onDecrement(step)}>
+        <button type="button" onClick={() => dispatch(action.decrement(step))}>
           Уменьшить на {step}
         </button>
       </div>
@@ -21,18 +24,4 @@ function Counter({ value, step, onIncrement, onDecrement }) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    value: state.counter.value,
-    step: state.counter.step,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onIncrement: value => dispatch(increment(value)),
-    onDecrement: value => dispatch(decrement(value)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+export default Counter;

@@ -11,13 +11,12 @@ const addTodo = createAction('todos/Add', text => {
   };
 });
 
-
 const toggleCompleted = createAction('todos/toggleCompleted');
 
 const addDelete = createAction('todos/Delete');
 
 const changeFilter = createAction('todos/changeFilter');
 
+const todosAtions = { addTodo, addDelete, toggleCompleted, changeFilter };
 
-
-export default { addTodo, addDelete, toggleCompleted, changeFilter };
+export default todosAtions;
