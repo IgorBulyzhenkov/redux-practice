@@ -1,6 +1,6 @@
 import './TodoList.css';
 import { useSelector, useDispatch } from 'react-redux';
-import todosAtions from './../../redux/todos/todos-actions';
+import todosOperations from './../../redux/todos/todos-operations';
 
 const getVisibleTodos = (allTodos, filter) => {
   const normalizedFilter = filter.toLowerCase();
@@ -14,14 +14,16 @@ function TodoList() {
   const todos = useSelector(state =>
     getVisibleTodos(state.todos.items, state.todos.filter)
   );
+  const isLoading = useSelector(state => state.todos.loading);
   const dispatch = useDispatch();
 
-  const onDeleteTodo = id => dispatch(todosAtions.addDelete(id));
-  const onToggleCompleted = id => dispatch(todosAtions.toggleCompleted(id));
+  const onDeleteTodo = id => dispatch(todosOperations.deleteTodo(id));
+  const onToggleCompleted = arg => dispatch(todosOperations.toggleTodo(arg));
 
   return (
     <div className="TodoList">
-      {/* <h2>Практика с классами</h2> */}
+      <h2>Практика REDUX--API</h2>
+      {isLoading && <p>...LOADING</p>}
       <ul className="TodoList__list">
         {todos.map(({ id, text, completed }) => {
           return (
@@ -31,7 +33,7 @@ function TodoList() {
                 className="TodoList__checkbox"
                 checked={completed}
                 onChange={() => {
-                  onToggleCompleted(id);
+                  onToggleCompleted({ id, completed: !completed });
                 }}
               ></input>
               <p className="TodoList__title">{text}</p>
@@ -51,25 +53,5 @@ function TodoList() {
     </div>
   );
 }
-
-// const getVisibleTodos = (allTodos, filter) => {
-//   const normalizedFilter = filter.toLowerCase();
-
-//   return allTodos.filter(todo =>
-//     todo.text.toLocaleLowerCase().includes(normalizedFilter)
-//   );
-// };
-
-// const mapStateToProps = state => {
-//   const { filter, items } = state.todos;
-
-//   const visibleTodos = getVisibleTodos(items, filter);
-//   return { todos: visibleTodos };
-// };
-
-// const mapDispatchToProps = dispatch => ({
-//   onDeleteTodo: id => dispatch(todos.addDelete(id)),
-//   onToggleCompleted: id => dispatch(todos.toggleCompleted(id)),
-// });
 
 export default TodoList;

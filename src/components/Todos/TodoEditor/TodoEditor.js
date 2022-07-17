@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import todoActions from './../../redux/todos/todos-actions';
+import todoOperations from './../../redux/todos/todos-operations';
 
 function TodoEditor() {
   const [message, setMessage] = useState('');
@@ -16,7 +16,7 @@ function TodoEditor() {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(todoActions.addTodo(message));
+    dispatch(todoOperations.addTodo(message));
     reset();
   };
 

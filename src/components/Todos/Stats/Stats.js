@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const Stats = ({ total, completedTodo }) => {
-  console.log(total, completedTodo);
   return (
     <div>
       <span>Общее количество : {total}</span>
