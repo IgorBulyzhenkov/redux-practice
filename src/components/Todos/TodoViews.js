@@ -21,7 +21,7 @@ class TodoViews extends Component {
       </div>
     );
   }
-}
+} 
 
 const mapDispatchToProps = dispatch => ({
   fetchTodos: () => dispatch(operationReduce.fetchTodos()),

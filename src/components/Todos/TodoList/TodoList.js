@@ -16,14 +16,18 @@ function TodoList() {
   );
   const isLoading = useSelector(state => state.todos.loading);
   const dispatch = useDispatch();
+  const err = useSelector(state => state.todos.error);
 
   const onDeleteTodo = id => dispatch(todosOperations.deleteTodo(id));
   const onToggleCompleted = arg => dispatch(todosOperations.toggleTodo(arg));
 
   return (
     <div className="TodoList">
-      <h2>Практика REDUX--API</h2>
-      {isLoading && <p>...LOADING</p>}
+      <div className="Loading">
+        <h2>Практика REDUX--API</h2>
+        {isLoading && <p>...LOADING</p>}
+      </div>
+      {err && <p>Error {err.message}</p>}
       <ul className="TodoList__list">
         {todos.map(({ id, text, completed }) => {
           return (
